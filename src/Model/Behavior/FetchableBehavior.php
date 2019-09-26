@@ -79,7 +79,7 @@ class FetchableBehavior extends Behavior
     /**
      * Fetch entity.
      *
-     * @param mixed $id
+     * @param int|string $id
      *
      * @return EntityInterface
      */
