@@ -31,14 +31,14 @@ class FetchableBehavior extends Behavior
      */
     public function initialize(array $config)
     {
+        // key is set automatically
+        if (!isset($config['key'])) {
+            $config['key'] = 'Fetchable.' . $this->_table->getAlias();
+        }
+
         // key can be callable
         if (\is_callable($config['key'])) {
             $config['key'] = $config['key']($this->_table->getAlias());
-        }
-
-        // key is set automatically
-        if (!$config['key']) {
-            $config['key'] = 'Fetchable.' . $this->_table->getAlias();
         }
 
         $this->setConfig('key', $config['key']);
