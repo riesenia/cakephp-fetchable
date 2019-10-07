@@ -35,5 +35,4 @@ the number of database queries for them.
 * *finder* - finder to use to get entities. Defaults to "all".
 * *cache* - cache config to use. Defaults to "default".
 * *contain* - set related entities that will be fetched.
-* *key* - key used for Cache and Configure calls. Can be set to callable to create it dynamically (i.e. for I18n dependend data.
-)
+* *key* - key used for *Cache* and *Configure* calls. Can be set to callable (i.e. for *I18n* dependend data).
