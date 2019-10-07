@@ -17,18 +17,38 @@ Using composer
 composer require riesenia/cakephp-fetchable
 ```
 
-Load plugin in *config/bootstrap.php*
-
-```php
-Plugin::load('Fetchable');
-```
-
 ## Usage
 
 This behavior is suitable for tables that contain moderate number of rows
 and are used commonly in many parts of application. Fetchable checks if they are
 already cached and also stores them in memory using `Configure` class. This lowers
 the number of database queries for them.
+
+```php
+class StatusesTable extends Table
+{
+    public function initialize(array $config)
+    {
+        parent::initialize($config);
+
+        $this->addBehavior('Fetchable.Fetchable', [
+            // can use custom finder
+            'finder' => 'active',
+            // cache config
+            'cache' => 'statuses_cache',
+            // can contain another data
+            'contain' => ['StatusProperties'],
+            // if i.e. status name is translatable
+            'key' => function ($name) {
+                return $name . '-' . I18n::getLocale();
+            }
+        ]);
+    }
+}
+
+// fetch all active statuses
+$this->Statuses->fetch();
+```
 
 ## Configuration options:
 
