@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace Fetchable\Model\Behavior;
 
 use Cake\Cache\Cache;
-use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\ORM\Behavior;
@@ -26,6 +25,9 @@ class FetchableBehavior extends Behavior
         'key' => null
     ];
 
+    /** @var array */
+    private $_cache;
+
     /**
      * {@inheritdoc}
      */
@@ -34,11 +36,6 @@ class FetchableBehavior extends Behavior
         // key is set automatically
         if (!isset($config['key'])) {
             $config['key'] = 'Fetchable.' . $this->_table->getAlias();
-        }
-
-        // key can be callable
-        if (\is_callable($config['key'])) {
-            $config['key'] = $config['key']($this->_table->getAlias());
         }
 
         $this->setConfig('key', $config['key']);
@@ -51,11 +48,17 @@ class FetchableBehavior extends Behavior
      */
     public function fetch(): array
     {
-        if (Configure::check($this->getConfig('key'))) {
-            return Configure::read($this->getConfig('key'));
+        $key = $this->getConfig('key');
+
+        if (\is_callable($key)) {
+            $key = $key($this->_table->getAlias());
         }
 
-        if (($data = Cache::read($this->getConfig('key'), $this->getConfig('cache'))) === false) {
+        if (isset($this->_cache[$key])) {
+            return $this->_cache[$key];
+        }
+
+        if (($data = Cache::read($key, $this->getConfig('cache'))) === false) {
             $data = [];
 
             $find = $this->_table->find($this->getConfig('finder'));
@@ -68,10 +71,10 @@ class FetchableBehavior extends Behavior
                 $data[$this->_getPrimaryValue($entity)] = $entity->toArray();
             }
 
-            Cache::write($this->getConfig('key'), $data, $this->getConfig('cache'));
+            Cache::write($key, $data, $this->getConfig('cache'));
         }
 
-        Configure::write($this->getConfig('key'), $data);
+        $this->_cache[$key] = $data;
 
         return $data;
     }
