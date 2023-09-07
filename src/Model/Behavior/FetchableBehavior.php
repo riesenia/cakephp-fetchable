@@ -91,7 +91,14 @@ class FetchableBehavior extends Behavior
             throw new RecordNotFoundException('Record not found');
         }
 
-        return $this->_table->newEntity($record, ['validate' => false]);
+        if (Configure::check($this->getConfig('key') . '.entity_' . $id)) {
+            return Configure::read($this->getConfig('key') . '.entity_' . $id);
+        }
+
+        $recordEntity = $this->_table->newEntity($record, ['validate' => false]);
+        Configure::write($this->getConfig('key') . '.entity_' . $id, $recordEntity);
+
+        return $recordEntity;
     }
 
     /**
