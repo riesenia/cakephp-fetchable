@@ -23,53 +23,71 @@ class I18nFixture extends TestFixture
      * @var string
      */
     public $table = 'i18n';
-    /**
-     * Fields.
-     *
-     * @var array
-     */
-    // @codingStandardsIgnoreStart
-    public $fields = [
-        'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
-        'locale' => ['type' => 'string', 'length' => 6, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'model' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'foreign_key' => ['type' => 'integer', 'length' => 10, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'field' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'content' => ['type' => 'text', 'length' => null, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null],
-        '_indexes' => [
-            'model' => ['type' => 'index', 'columns' => ['model', 'foreign_key', 'field'], 'length' => []],
-        ],
-        '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-            'locale' => ['type' => 'unique', 'columns' => ['locale', 'model', 'foreign_key', 'field'], 'length' => []],
-        ],
-        '_options' => [
-            'engine' => 'InnoDB',
-            'collation' => 'utf8_general_ci'
-        ],
-    ];
 
-    /**
-     * Records.
-     *
-     * @var array
-     */
-    public $records = [
-        [
-            'id' => 1,
-            'locale' => 'sk_SK',
-            'model' => 'Statuses',
-            'foreign_key' => 1,
-            'field' => 'name',
-            'content' => 'First status - sk'
-        ],
-        [
-            'id' => 2,
-            'locale' => 'sk_SK',
-            'model' => 'StatusProperties',
-            'foreign_key' => 1,
-            'field' => 'name',
-            'content' => 'Property 1 - sk'
-        ],
-    ];
+    public function init(): void
+    {
+        $this->records = [
+            [
+                'id' => 1,
+                'locale' => 'sk_SK',
+                'model' => 'Statuses',
+                'foreign_key' => 1,
+                'field' => 'name',
+                'content' => 'First status - sk'
+            ],
+            [
+                'id' => 2,
+                'locale' => 'sk_SK',
+                'model' => 'StatusProperties',
+                'foreign_key' => 1,
+                'field' => 'name',
+                'content' => 'Property 1 - sk'
+            ],
+        ];
+        parent::init();
+    }
+
+    protected function _buildSchema($schema)
+    {
+        return $schema->addColumn('id', [
+            'type' => 'integer',
+            'null' => false,
+            'autoIncrement' => true,
+        ])
+        ->addColumn('locale', [
+            'type' => 'string',
+            'length' => 6,
+            'null' => false,
+        ])
+        ->addColumn('model', [
+            'type' => 'string',
+            'length' => 255,
+            'null' => false,
+        ])
+        ->addColumn('foreign_key', [
+            'type' => 'integer',
+            'null' => false,
+        ])
+        ->addColumn('field', [
+            'type' => 'string',
+            'length' => 255,
+            'null' => false,
+        ])
+        ->addColumn('content', [
+            'type' => 'text',
+            'null' => true,
+        ])
+        ->addConstraint('primary', [
+            'type' => 'primary',
+            'columns' => ['id']
+        ])
+        ->addConstraint('locale', [
+            'type' => 'unique',
+            'columns' => ['locale', 'model', 'foreign_key', 'field']
+        ])
+        ->addIndex('model', [
+            'type' => 'index',
+            'columns' => ['model', 'foreign_key', 'field']
+        ]);
+    }
 }

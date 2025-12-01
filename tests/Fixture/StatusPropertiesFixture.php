@@ -14,24 +14,41 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 class StatusPropertiesFixture extends TestFixture
 {
-    public $fields = [
-        'id' => ['type' => 'integer'],
-        'status_id' => ['type' => 'integer', 'default' => null, 'null' => true],
-        'name' => ['type' => 'string', 'default' => null, 'null' => true],
-        '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['id']]
-        ]
-    ];
-    public $records = [
-        [
-            'id' => 1,
-            'status_id' => 1,
-            'name' => 'First property'
-        ],
-        [
-            'id' => 2,
-            'status_id' => 1,
-            'name' => 'Second property'
-        ]
-    ];
+    public function init(): void
+    {
+        $this->records = [
+            [
+                'id' => 1,
+                'status_id' => 1,
+                'name' => 'First property'
+            ],
+            [
+                'id' => 2,
+                'status_id' => 1,
+                'name' => 'Second property'
+            ]
+        ];
+        parent::init();
+    }
+
+    protected function _buildSchema($schema)
+    {
+        return $schema->addColumn('id', [
+            'type' => 'integer',
+            'null' => false,
+        ])
+        ->addColumn('status_id', [
+            'type' => 'integer',
+            'null' => true,
+        ])
+        ->addColumn('name', [
+            'type' => 'string',
+            'length' => 255,
+            'null' => true,
+        ])
+        ->addConstraint('primary', [
+            'type' => 'primary',
+            'columns' => ['id']
+        ]);
+    }
 }
