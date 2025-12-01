@@ -31,7 +31,7 @@ class FetchableBehavior extends Behavior
     /**
      * {@inheritdoc}
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         // key is set automatically
         if (!isset($config['key'])) {

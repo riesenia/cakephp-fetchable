@@ -5,7 +5,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/riesenia/cakephp-fetchable.svg?style=flat-square)](https://packagist.org/packages/riesenia/cakephp-fetchable)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
-This plugin is for CakePHP 3.x and contains behavior that handles fetching entities
+This plugin is for CakePHP 4.x and contains behavior that handles fetching entities
 from cache / memory storage. Relevant for tables that contain moderate number of rows
 and are used commonly in many parts of application.
 

@@ -14,7 +14,7 @@ use Cake\ORM\Table;
 
 class StatusPropertiesTable extends Table
 {
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 

@@ -89,11 +89,11 @@ class FetchableBehaviorTest extends TestCase
     /**
      * setUp method.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->Statuses = TableRegistry::get('Statuses', [
+        $this->Statuses = TableRegistry::getTableLocator()->get('Statuses', [
             'className' => 'TestApp\Model\Table\StatusesTable'
         ]);
     }
@@ -101,7 +101,7 @@ class FetchableBehaviorTest extends TestCase
     /**
      * tearDown method.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Statuses);
 
