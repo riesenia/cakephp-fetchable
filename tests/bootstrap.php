@@ -85,12 +85,13 @@ if (!\getenv('db_class')) {
 
 ConnectionManager::setConfig('test', [
     'className' => 'Cake\Database\Connection',
-    'driver' => \getenv('db_class'),
-    'dsn' => \getenv('db_dsn'),
-    'database' => \getenv('db_database'),
-    'username' => \getenv('db_login'),
-    'password' => \getenv('db_password'),
-    'timezone' => 'UTC'
+    'driver' => \getenv('db_class') ?: 'Cake\Database\Driver\Sqlite',
+    'database' => \getenv('db_database') ?: ':memory:',
+    'username' => \getenv('db_login') ?: null,
+    'password' => \getenv('db_password') ?: null,
+    'timezone' => 'UTC',
+    'quoteIdentifiers' => false,
+    'cacheMetadata' => true,
 ]);
 Log::setConfig([
     'debug' => [
