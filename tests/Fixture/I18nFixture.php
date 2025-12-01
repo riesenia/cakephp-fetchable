@@ -24,32 +24,29 @@ class I18nFixture extends TestFixture
      */
     public $table = 'i18n';
 
-    public function init(): void
-    {
-        $this->records = [
-            [
-                'id' => 1,
-                'locale' => 'sk_SK',
-                'model' => 'Statuses',
-                'foreign_key' => 1,
-                'field' => 'name',
-                'content' => 'First status - sk'
-            ],
-            [
-                'id' => 2,
-                'locale' => 'sk_SK',
-                'model' => 'StatusProperties',
-                'foreign_key' => 1,
-                'field' => 'name',
-                'content' => 'Property 1 - sk'
-            ],
-        ];
-        parent::init();
-    }
+    public $records = [
+        [
+            'id' => 1,
+            'locale' => 'sk_SK',
+            'model' => 'Statuses',
+            'foreign_key' => 1,
+            'field' => 'name',
+            'content' => 'First status - sk'
+        ],
+        [
+            'id' => 2,
+            'locale' => 'sk_SK',
+            'model' => 'StatusProperties',
+            'foreign_key' => 1,
+            'field' => 'name',
+            'content' => 'Property 1 - sk'
+        ],
+    ];
 
-    protected function _buildSchema($schema)
+    public function getTableSchema()
     {
-        return $schema->addColumn('id', [
+        $schema = new \Cake\Database\Schema\TableSchema('i18n');
+        $schema->addColumn('id', [
             'type' => 'integer',
             'null' => false,
             'autoIncrement' => true,
@@ -89,5 +86,7 @@ class I18nFixture extends TestFixture
             'type' => 'index',
             'columns' => ['model', 'foreign_key', 'field']
         ]);
+
+        return $schema;
     }
 }

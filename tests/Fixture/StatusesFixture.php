@@ -14,24 +14,21 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 class StatusesFixture extends TestFixture
 {
-    public function init(): void
-    {
-        $this->records = [
-            [
-                'id' => 1,
-                'name' => 'First status'
-            ],
-            [
-                'id' => 2,
-                'name' => 'Second status'
-            ]
-        ];
-        parent::init();
-    }
+    public $records = [
+        [
+            'id' => 1,
+            'name' => 'First status'
+        ],
+        [
+            'id' => 2,
+            'name' => 'Second status'
+        ]
+    ];
 
-    protected function _buildSchema($schema)
+    public function getTableSchema()
     {
-        return $schema->addColumn('id', [
+        $schema = new \Cake\Database\Schema\TableSchema('statuses');
+        $schema->addColumn('id', [
             'type' => 'integer',
             'null' => false,
         ])
@@ -44,5 +41,7 @@ class StatusesFixture extends TestFixture
             'type' => 'primary',
             'columns' => ['id']
         ]);
+
+        return $schema;
     }
 }
