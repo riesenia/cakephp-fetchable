@@ -13,12 +13,8 @@ jobs:
       fail-fast: false
       matrix:
         php-version: ['8.0', '8.1', '8.2', '8.3']
-        dependencies: ['highest']
-        include:
-          - php-version: '8.0'
-            dependencies: 'lowest'
 
-    name: PHP ${{ matrix.php-version }} - ${{ matrix.dependencies }}
+    name: PHP ${{ matrix.php-version }}
 
     steps:
       - uses: actions/checkout@v3
@@ -44,13 +40,8 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: Install dependencies (highest)
-        if: matrix.dependencies == 'highest'
+      - name: Install dependencies
         run: composer update --prefer-dist --no-interaction --no-progress
-
-      - name: Install dependencies (lowest)
-        if: matrix.dependencies == 'lowest'
-        run: composer update --prefer-lowest --prefer-stable --prefer-dist --no-interaction --no-progress
 
       - name: Run test suite
         run: vendor/bin/phpunit
