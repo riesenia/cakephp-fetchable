@@ -16,7 +16,9 @@ use Cake\ORM\Behavior;
 
 class FetchableBehavior extends Behavior
 {
-    /** @var array */
+    /**
+     * @var array<string,mixed>
+     */
     protected $_defaultConfig = [
         'finder' => 'all',
         'cache' => 'default',
@@ -24,7 +26,9 @@ class FetchableBehavior extends Behavior
         'key' => null
     ];
 
-    /** @var array */
+    /**
+     * @var array<string,array<int|string,mixed>>
+     */
     private $_cache;
 
     public function initialize(array $config): void
@@ -39,6 +43,8 @@ class FetchableBehavior extends Behavior
 
     /**
      * Fetch data.
+     *
+     * @return array<int|string,mixed>
      */
     public function fetch(): array
     {
@@ -102,6 +108,12 @@ class FetchableBehavior extends Behavior
             }, $this->_table->getPrimaryKey()));
         }
 
-        return $entity->get($this->_table->getPrimaryKey());
+        $primary = $entity->get($this->_table->getPrimaryKey());
+
+        if (!is_int($primary) && !is_string($primary)) {
+            throw new \RuntimeException('Primary key value is not a string or integer');
+        }
+
+        return $primary;
     }
 }
