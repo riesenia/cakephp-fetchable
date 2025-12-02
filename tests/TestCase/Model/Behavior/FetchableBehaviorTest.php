@@ -5,7 +5,6 @@
  * Licensed under the MIT License
  * (c) RIESENIA.com
  */
-
 declare(strict_types=1);
 
 namespace Fetchable\Test\TestCase\Model\Behavior;
@@ -30,6 +29,11 @@ class FetchableBehaviorTest extends TestCase
         'plugin.Fetchable.StatusProperties',
         'plugin.Fetchable.I18n'
     ];
+
+    /**
+     * @var \TestApp\Model\Table\StatusesTable
+     */
+    protected $Statuses;
 
     /**
      * Test fetch.
@@ -87,13 +91,34 @@ class FetchableBehaviorTest extends TestCase
     }
 
     /**
+     * setUpBeforeClass method - Create fixture tables.
+     */
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+
+        $connection = \Cake\Datasource\ConnectionManager::get('test');
+
+        // Create fixture tables
+        $fixtures = [
+            new \Fetchable\Test\Fixture\StatusesFixture(),
+            new \Fetchable\Test\Fixture\StatusPropertiesFixture(),
+            new \Fetchable\Test\Fixture\I18nFixture()
+        ];
+
+        foreach ($fixtures as $fixture) {
+            $fixture->create($connection);
+        }
+    }
+
+    /**
      * setUp method.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->Statuses = TableRegistry::get('Statuses', [
+        $this->Statuses = TableRegistry::getTableLocator()->get('Statuses', [
             'className' => 'TestApp\Model\Table\StatusesTable'
         ]);
     }
@@ -101,7 +126,7 @@ class FetchableBehaviorTest extends TestCase
     /**
      * tearDown method.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Statuses);
 

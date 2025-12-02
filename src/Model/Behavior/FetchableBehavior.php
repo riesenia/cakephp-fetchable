@@ -5,7 +5,6 @@
  * Licensed under the MIT License
  * (c) RIESENIA.com
  */
-
 declare(strict_types=1);
 
 namespace Fetchable\Model\Behavior;
@@ -28,10 +27,7 @@ class FetchableBehavior extends Behavior
     /** @var array */
     private $_cache;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         // key is set automatically
         if (!isset($config['key'])) {
@@ -43,8 +39,6 @@ class FetchableBehavior extends Behavior
 
     /**
      * Fetch data.
-     *
-     * @return array
      */
     public function fetch(): array
     {
@@ -58,7 +52,7 @@ class FetchableBehavior extends Behavior
             return $this->_cache[$key];
         }
 
-        if (($data = Cache::read($key, $this->getConfig('cache'))) === false) {
+        if (!($data = Cache::read($key, $this->getConfig('cache')))) {
             $data = [];
 
             $find = $this->_table->find($this->getConfig('finder'));
@@ -83,8 +77,6 @@ class FetchableBehavior extends Behavior
      * Fetch entity.
      *
      * @param int|string $id
-     *
-     * @return EntityInterface
      */
     public function fetchEntity($id): EntityInterface
     {
@@ -99,8 +91,6 @@ class FetchableBehavior extends Behavior
 
     /**
      * Get primary key value for entity.
-     *
-     * @param EntityInterface $entity
      *
      * @return int|string
      */

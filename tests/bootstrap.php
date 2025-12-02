@@ -5,7 +5,6 @@
  * Licensed under the MIT License
  * (c) RIESENIA.com
  */
-
 declare(strict_types=1);
 
 use Cake\Cache\Cache;
@@ -85,22 +84,23 @@ if (!\getenv('db_class')) {
 
 ConnectionManager::setConfig('test', [
     'className' => 'Cake\Database\Connection',
-    'driver' => \getenv('db_class'),
-    'dsn' => \getenv('db_dsn'),
-    'database' => \getenv('db_database'),
-    'username' => \getenv('db_login'),
-    'password' => \getenv('db_password'),
-    'timezone' => 'UTC'
+    'driver' => \getenv('db_class') ?: 'Cake\Database\Driver\Sqlite',
+    'database' => \getenv('db_database') ?: ':memory:',
+    'username' => \getenv('db_login') ?: null,
+    'password' => \getenv('db_password') ?: null,
+    'timezone' => 'UTC',
+    'quoteIdentifiers' => false,
+    'cacheMetadata' => false
 ]);
 Log::setConfig([
     'debug' => [
         'engine' => 'Cake\Log\Engine\FileLog',
         'levels' => ['notice', 'info', 'debug'],
-        'file' => 'debug',
+        'file' => 'debug'
     ],
     'error' => [
         'engine' => 'Cake\Log\Engine\FileLog',
         'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
-        'file' => 'error',
+        'file' => 'error'
     ]
 ]);
