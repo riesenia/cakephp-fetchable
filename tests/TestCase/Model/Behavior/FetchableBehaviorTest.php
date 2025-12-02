@@ -5,7 +5,6 @@
  * Licensed under the MIT License
  * (c) RIESENIA.com
  */
-
 declare(strict_types=1);
 
 namespace Fetchable\Test\TestCase\Model\Behavior;
@@ -30,6 +29,11 @@ class FetchableBehaviorTest extends TestCase
         'plugin.Fetchable.StatusProperties',
         'plugin.Fetchable.I18n'
     ];
+
+    /**
+     * @var \TestApp\Model\Table\StatusesTable
+     */
+    protected $Statuses;
 
     /**
      * Test fetch.
@@ -84,6 +88,27 @@ class FetchableBehaviorTest extends TestCase
 
         $this->assertEquals('First status - sk', $statuses[1]['name']);
         $this->assertEquals('Property 1 - sk', $statuses[1]['status_properties'][0]['name']);
+    }
+
+    /**
+     * setUpBeforeClass method - Create fixture tables.
+     */
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+
+        $connection = \Cake\Datasource\ConnectionManager::get('test');
+
+        // Create fixture tables
+        $fixtures = [
+            new \Fetchable\Test\Fixture\StatusesFixture(),
+            new \Fetchable\Test\Fixture\StatusPropertiesFixture(),
+            new \Fetchable\Test\Fixture\I18nFixture()
+        ];
+
+        foreach ($fixtures as $fixture) {
+            $fixture->create($connection);
+        }
     }
 
     /**

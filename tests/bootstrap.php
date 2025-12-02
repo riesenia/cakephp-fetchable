@@ -5,7 +5,6 @@
  * Licensed under the MIT License
  * (c) RIESENIA.com
  */
-
 declare(strict_types=1);
 
 use Cake\Cache\Cache;
@@ -91,17 +90,17 @@ ConnectionManager::setConfig('test', [
     'password' => \getenv('db_password') ?: null,
     'timezone' => 'UTC',
     'quoteIdentifiers' => false,
-    'cacheMetadata' => true,
+    'cacheMetadata' => false
 ]);
 Log::setConfig([
     'debug' => [
         'engine' => 'Cake\Log\Engine\FileLog',
         'levels' => ['notice', 'info', 'debug'],
-        'file' => 'debug',
+        'file' => 'debug'
     ],
     'error' => [
         'engine' => 'Cake\Log\Engine\FileLog',
         'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
-        'file' => 'error',
+        'file' => 'error'
     ]
 ]);
